@@ -34,7 +34,7 @@ For example, to fetch events for today and the next 2 days (3 days total):
 ~/.config/sketchybar/calendar_events 3
 ```
 
-If no argument is provided, the default is 1 (only today).
+If no argument is provided, the default is 1 (only today). See [my sketchybar config](https://github.com/zigotica/tilde/tree/master/.config/sketchybar/items/ical) for an example of this.
 
 ## Output
 
