@@ -1,6 +1,29 @@
 import Foundation
 import EventKit
 
+#if os(macOS)
+import Darwin
+
+func getExecutablePath() -> URL? {
+    var bufsize = UInt32(PATH_MAX)
+    let buf = UnsafeMutablePointer<Int8>.allocate(capacity: Int(bufsize))
+    defer { buf.deallocate() }
+    let result = _NSGetExecutablePath(buf, &bufsize)
+    if result != 0 {
+        // Buffer was too small or error
+        return nil
+    }
+    let path = String(cString: buf)
+    // Resolve symlinks, .., etc
+    return URL(fileURLWithPath: path).standardized.deletingLastPathComponent()
+}
+#else
+func getExecutablePath() -> URL? {
+    // Fallback for other OSes if needed
+    return nil
+}
+#endif
+
 let store = EKEventStore()
 let semaphore = DispatchSemaphore(value: 0)
 
@@ -15,9 +38,13 @@ let daysToFetch: Int = {
 }()
 
 func loadAllowedCalendars(from allCalendars: [EKCalendar]) -> [EKCalendar] {
-    let binaryPath = CommandLine.arguments.first ?? ""
-    let binaryDir = URL(fileURLWithPath: binaryPath).deletingLastPathComponent()
+    guard let binaryDir = getExecutablePath() else {
+        print("Could not resolve binary path. Using all calendars.")
+        return allCalendars
+    }
+
     let fileURL = binaryDir.appendingPathComponent("calendars.txt")
+    print("Looking for calendars.txt at: \(fileURL.path)")
 
     do {
         let contents = try String(contentsOf: fileURL, encoding: .utf8)
@@ -41,19 +68,17 @@ func loadAllowedCalendars(from allCalendars: [EKCalendar]) -> [EKCalendar] {
 }
 
 func fetchEvents() {
-    // Uncomment to check the names of the available calendars
-    // Compile normally and execute the binary to see the output
-    // print("Available calendars:")
-    // for cal in store.calendars(for: .event) {
-    //     print("- \(cal.title)")
-    // }
-    // print("-----")
-
     // Fetch all event calendars
     let allCalendars = store.calendars(for: .event)
 
     // Filter calendars by name
     let selectedCalendars = loadAllowedCalendars(from: allCalendars)
+
+    print("Selected calendars:")
+    for cal in selectedCalendars {
+        print("- \(cal.title)")
+    }
+    print("-----")
 
     if selectedCalendars.isEmpty {
         print("No matching calendars found.")
