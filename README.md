@@ -1,6 +1,6 @@
 # MacOS Calendar Events
 
-This is a small Swift script that compiles into a binary to display upcoming events from the macOS Calendar app. It's designed for integration with [SketchyBar](https://github.com/knollmeyer/sketchybar) but can be used anywhere.
+This is a small Swift script that compiles into a binary to display upcoming events from the macOS Calendar app. It's designed for integration with [SketchyBar](https://github.com/FelixKratz/SketchyBar) but can be used anywhere.
 
 Unlike tools like iCalBuddy, this script avoids common macOS TCC (Transparency, Consent, and Control) permission issues by using the native EventKit framework.
 
@@ -17,7 +17,6 @@ You can change the output path or binary name as needed.
 ## 🔖 Selecting Calendars
 
 Create a `calendars.txt` file in the same directory as the compiled script, listing the names of the calendars you want to include — one per line:
-
 
 ```text
 calendar A
