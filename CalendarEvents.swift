@@ -99,7 +99,7 @@ func fetchEvents() {
         timeFormatter.dateFormat = "HH:mm"
         timeFormatter.locale = Locale(identifier: "en_US_POSIX")
 
-        for event in events where event.startDate > now {
+        for event in events where event.endDate > now {
             let startTime = timeFormatter.string(from: event.startDate)
             let endTime = timeFormatter.string(from: event.endDate)
             let title = event.title ?? "(No Title)"
