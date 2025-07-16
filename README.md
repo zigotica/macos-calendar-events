@@ -9,7 +9,7 @@ Unlike tools like iCalBuddy, this script avoids common macOS TCC (Transparency, 
 You only need to compile the Swift script once:
 
 ```bash
-swiftc CalendarEvents.swift -o ~/.config/sketchybar/calendar_events
+swiftc CalendarEvents.swift -o ~/.config/bin/utils/calendar_events
 ```
 
 You can change the output path or binary name as needed.
@@ -31,7 +31,7 @@ You can pass the number of days to fetch as a command-line argument when running
 For example, to fetch events for today and the next 2 days (3 days total):
 
 ```bash
-~/.config/sketchybar/calendar_events 3
+~/.config/bin/utils/calendar_events 3
 ```
 
 If no argument is provided, the default is 1 (only today). See [my sketchybar config](https://github.com/zigotica/tilde/tree/master/.config/sketchybar/items/ical) for an example of this.
